@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🤖 Advanced Trading Bot
 
 > **Professional Automated Trading System for Forex & Cryptocurrency Markets**
@@ -349,3 +350,6 @@ This project is licensed under the MIT License.
 **Built with ❤️ for automated trading enthusiasts**
 
 *Happy Trading! 🚀*
+=======
+# tradingbot
+>>>>>>> 82b95b891d616c31af01d6cce696a06b5c7b532b
