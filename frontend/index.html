@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Trading Bot - Dashboard</title>
+    <meta name="description" content="Professional trading bot dashboard for Forex and Crypto markets with real-time analytics">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-gradient"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🤖</div>
+                    <div class="logo-text">
+                        <h1>Trading Bot</h1>
+                        <span class="version">v1.0 Pro</span>
+                    </div>
+                </div>
+                
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <span class="stat-label">Mode</span>
+                        <span class="stat-value mode-badge" id="tradingMode">PAPER</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Status</span>
+                        <span class="stat-value status-badge active" id="botStatus">
+                            <span class="pulse"></span>
+                            Active
+                        </span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Balance</span>
+                        <span class="stat-value balance-value" id="currentBalance">$10,000.00</span>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="settingsBtn">
+                        ⚙️ Settings
+                    </button>
+                    <button class="btn btn-primary" id="startStopBtn">
+                        ▶️ Start Trading
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Performance Overview -->
+            <section class="performance-section">
+                <div class="section-header">
+                    <h2>📊 Performance Overview</h2>
+                    <div class="time-selector">
+                        <button class="time-btn active" data-period="24h">24H</button>
+                        <button class="time-btn" data-period="7d">7D</button>
+                        <button class="time-btn" data-period="30d">30D</button>
+                        <button class="time-btn" data-period="all">ALL</button>
+                    </div>
+                </div>
+                
+                <div class="performance-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon profit">💰</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Total P&L</span>
+                            <span class="metric-value profit" id="totalPnl">+$0.00</span>
+                            <span class="metric-change positive" id="pnlChange">+0.00%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">📈</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Win Rate</span>
+                            <span class="metric-value" id="winRate">0%</span>
+                            <span class="metric-detail" id="winRateDetail">0/0 trades</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">🎯</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Total Trades</span>
+                            <span class="metric-value" id="totalTrades">0</span>
+                            <span class="metric-detail" id="tradesDetail">0 open positions</span>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-content">
+                            <span class="metric-label">Sharpe Ratio</span>
+                            <span class="metric-value" id="sharpeRatio">0.00</span>
+                            <span class="metric-detail">Risk-adjusted return</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Equity Curve Chart -->
+                <div class="chart-container">
+                    <h3>Equity Curve</h3>
+                    <canvas id="equityChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Active Positions & Recent Trades -->
+            <section class="trades-section">
+                <div class="trades-grid">
+                    
+                    <!-- Active Positions -->
+                    <div class="trades-panel">
+                        <div class="panel-header">
+                            <h3>🔥 Active Positions</h3>
+                            <span class="badge" id="activeCount">0</span>
+                        </div>
+                        <div class="positions-list" id="activePositions">
+                            <div class="empty-state">
+                                <div class="empty-icon">📭</div>
+                                <p>No active positions</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Trades -->
+                    <div class="trades-panel">
+                        <div class="panel-header">
+                            <h3>📜 Recent Trades</h3>
+                            <button class="btn-link" id="viewAllBtn">View All →</button>
+                        </div>
+                        <div class="trades-list" id="recentTrades">
+                            <div class="empty-state">
+                                <div class="empty-icon">📊</div>
+                                <p>No trades yet</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+
+            <!-- Strategies Overview -->
+            <section class="strategies-section">
+                <div class="section-header">
+                    <h2>🎯 Active Strategies</h2>
+                    <button class="btn btn-secondary" id="configureStrategiesBtn">
+                        Configure
+                    </button>
+                </div>
+                
+                <div class="strategies-grid" id="strategiesGrid">
+                    <!-- Strategies will be loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Market Watch -->
+            <section class="market-section">
+                <div class="section-header">
+                    <h2>📡 Market Watch</h2>
+                    <div class="market-tabs">
+                        <button class="market-tab active" data-market="crypto">Crypto</button>
+                        <button class="market-tab" data-market="forex">Forex</button>
+                    </div>
+                </div>
+                
+                <div class="market-grid" id="marketGrid">
+                    <!-- Market data will be loaded dynamically -->
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 Advanced Trading Bot | Built with ❤️ for automated trading</p>
+            <div class="footer-links">
+                <a href="#" id="docsLink">Documentation</a>
+                <a href="#" id="supportLink">Support</a>
+                <a href="#" id="githubLink">GitHub</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ Settings</h2>
+                <button class="modal-close" id="closeSettingsBtn">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-group">
+                    <label for="tradingModeSelect">Trading Mode</label>
+                    <select id="tradingModeSelect" class="input">
+                        <option value="paper">Paper Trading</option>
+                        <option value="live">Live Trading</option>
+                    </select>
+                </div>
+                
+                <div class="settings-group">
+                    <label for="maxPositions">Max Positions</label>
+                    <input type="number" id="maxPositions" class="input" value="3" min="1" max="10">
+                </div>
+                
+                <div class="settings-group">
+                    <label for="stopLoss">Stop Loss %</label>
+                    <input type="number" id="stopLoss" class="input" value="2.0" step="0.1" min="0.1" max="10">
+                </div>
+                
+                <div class="settings-group">
+                    <label for="takeProfit">Take Profit %</label>
+                    <input type="number" id="takeProfit" class="input" value="4.0" step="0.1" min="0.1" max="20">
+                </div>
+                
+                <button class="btn btn-primary full-width" id="saveSettingsBtn">
+                    💾 Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="app.js"></script>
+</body>
+</html>
